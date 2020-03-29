@@ -1,18 +1,17 @@
 // POO
 
-// 1 => Obstacle
-let grid = [
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-    [20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
-    [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
-    [40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
-    [50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
-    [60, 61, 62, 63, 64, 65, 66, 67, 68, 69],
-    [70, 71, 72, 73, 74, 75, 76, 77, 78, 79],
-    [80, 81, 82, 83, 84, 85, 86, 87, 88, 89],
-    [90, 91, 92, 93, 94, 95, 96, 97, 98, 99],
-]
+// let grid = [
+//     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+//     [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+//     [20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+//     [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+//     [40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+//     [50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
+//     [60, 61, 62, 63, 64, 65, 66, 67, 68, 69],
+//     [70, 71, 72, 73, 74, 75, 76, 77, 78, 79],
+//     [80, 81, 82, 83, 84, 85, 86, 87, 88, 89],
+//     [90, 91, 92, 93, 94, 95, 96, 97, 98, 99],
+// ]
 
 let obstaculos = [22, 42]
 
@@ -20,6 +19,72 @@ let commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'r',
 // let commandsArray = ['b', 'b', 'b', 'b', 'b', 'b', 'l', 'f'];
 
 let commandsArray2 = ['f', 'l', 'f', 'r', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'f'];;
+
+
+function tableCreate() {
+    //body reference 
+    var body = document.getElementsByTagName("body")[0];
+
+    // create elements <table> and a <tbody>
+    var tbl = document.createElement("table");
+    var tblBody = document.createElement("tbody");
+    tbl.setAttribute('class', 'mars')
+
+
+    // cells creation
+    for (var j = 0; j < 10; j++) {
+        // table row creation
+        var row = document.createElement("tr");
+        // row.setAttribute("id", j);
+
+        for (var i = 0; i < 10; i++) {
+            var cell = document.createElement("td");
+            cell.setAttribute("class", "cell")
+            j == 0 ? cell.setAttribute("id", i) : cell.setAttribute("id", j.toString() + i)
+            var cellText = document.createTextNode(j.toString() + i);
+
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+        }
+
+        //row added to end of table body
+        tblBody.appendChild(row);
+    }
+
+    // append the <tbody> inside the <table>
+    tbl.appendChild(tblBody);
+    // put <table> in the <body>
+    body.appendChild(tbl);
+    // tbl border attribute to 
+    tbl.setAttribute("border", "1");
+
+    console.log(body);
+
+}
+
+
+// function crearTable() {
+//     let body = document.getElementsByTagName('body')[0]
+
+//     let tbl = document.createElement('table')
+//     let tblBody = document.createElement('tbody')
+//     let row = document.createElement('tr')
+//     let cell = document.createElement('td')
+
+//     row.appendChild(cell)
+//     tbl.appendChild(tblBody)
+//     body.appendChild(tbl)
+
+//     console.log(body);
+
+
+
+// }
+
+tableCreate();
+
+
+
 
 function roverObject(commands, startDirection, posX, posY) {
     let rover = {
@@ -38,17 +103,18 @@ function roverObject(commands, startDirection, posX, posY) {
     function leerComandos() {
 
         for (i = 0; i < commands.length; i++) {
-            commands[i] == 'f' || commands == 'b' ? moverRover(commands[i]) : girarRover(commands[i])
+            commands[i] == 'f' || commands == 'b' ? moverRover(commands[i], rover.direction) : girarRover(commands[i], rover.direction)
         }
         console.log('positionLog: ');
         positionLog.forEach(e => console.log(e))
     }
 
-    function moverRover(command) {
+    function moverRover(command, roverDirection) {
 
         // Pintar Rover
-        pintarRover();
+        // pintarRover();
 
+        // CREAR FUNCION DE MARCHA ALANTE Y FUNCION DE MARCHA ATRÁS
 
         if (rover.direction == 'N') {
             if (command == 'f') {
@@ -90,8 +156,6 @@ function roverObject(commands, startDirection, posX, posY) {
                 }
             }
         }
-
-
 
         if (rover.direction == 'S') {
             if (command == 'f') {
@@ -242,7 +306,7 @@ function roverObject(commands, startDirection, posX, posY) {
             }
         }
 
-        pintarRover();
+        // pintarRover();
 
     }
 
@@ -354,7 +418,7 @@ function roverObject(commands, startDirection, posX, posY) {
         }
     }
 
-    function girarRover(commands) {
+    function girarRover(commands, roverDirection) {
 
         let direccionActual = rover.direction;
 
@@ -432,16 +496,9 @@ console.log(`ROVER 1 =>
 `);
 var Rover1 = new roverObject(commandsArray, 'N', 1, 7)
 
-
-
 console.log(`
 
 ROVER 2 =>
 
 `);
 var Rover2 = new roverObject(commandsArray2, 'S', 5, 0)
-
-
-
-
-
