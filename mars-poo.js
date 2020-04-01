@@ -1,6 +1,6 @@
 // POO
 
-let grid = [
+const grid = [
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
     [20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
@@ -13,12 +13,13 @@ let grid = [
     [90, 91, 92, 93, 94, 95, 96, 97, 98, 99],
 ]
 
-let obstaculos = [22, 42]
+const obstaculos = [41, 11, 24, 92, 87, 84]
 
-let commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f'];
+const commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f'];
 // let commandsArray = ['b', 'b', 'b', 'b', 'b', 'b', 'l', 'f'];
 
-let commandsArray2 = ['f', 'l', 'f', 'r', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'f'];;
+const commandsArray2 = ['f', 'l', 'f', 'r', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'f'];
+
 
 
 function tableCreate() {
@@ -39,16 +40,14 @@ function tableCreate() {
 
 
         for (var i = 0; i < 10; i++) {
-            let idNum = (j - 1).toString() + (i - 1);
+
+            let idNum = parseFloat((j - 1).toString() + (i - 1))
             var cell = document.createElement("td");
             cell.setAttribute("class", "cell")
             if (j != 0 && i != 0) {
-                cell.setAttribute("id", parseFloat(idNum));
+                cell.setAttribute("id", idNum);
             }
             if (j == 0 || i == 0) {
-                // Pintar numeros en celdas
-                // Pintar Obstáculos
-
                 //Pintar numeros
                 var cellText = j >= 1 ? document.createTextNode(j) : document.createTextNode(i)
                 cell.appendChild(cellText);
@@ -56,6 +55,14 @@ function tableCreate() {
                 var cellText = document.createTextNode('0')
                 cell.appendChild(cellText);
             }
+
+            // Pintar Obstáculos
+            obstaculos.forEach(function (obs) {
+                if (obs == grid[j][i]) {
+                    cell.style.backgroundColor = 'blue'
+                    cell.innerHTML = 'X'
+                }
+            })
 
             row.appendChild(cell);
         }
@@ -120,6 +127,10 @@ function roverObject(commands, startDirection, posX, posY) {
         // Pintar Rover
         pintarRover();
 
+        // Devuelve si es OK Terreno Calda Siguiente => Ejecuta todo analizarTerreno() en console.log()
+        // console.log(analizarTerreno(command));
+
+
         // CREAR FUNCION DE MARCHA ALANTE Y FUNCION DE MARCHA ATRÁS
 
         if (roverDirection == 'N') {
@@ -131,13 +142,25 @@ function roverObject(commands, startDirection, posX, posY) {
                     let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
                     console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
 
+
+                    //ESTO DENTRO DE ANALIZAR TERRENO 
+
                     if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
                         console.log(`
 ^^^^^^^^^^^^^^^^^^^
      Obstaculo       
 ^^^^^^^^^^^^^^^^^^^`);
+
+
+
                         newPos.y++
                     }
+
+                    //ESTO DENTRO DE ANALIZAR TERRENO 
+
+
+
+
                     console.log('-----------------------------');
                     positionLog.push(grid[newPos.y][newPos.x])
                 }
@@ -339,8 +362,6 @@ function roverObject(commands, startDirection, posX, posY) {
 
             if (direccionActual == 'N') {
                 if (grid[newPos.y - 1] && grid[newPos.y - 1].innerHTML != 'X') {
-                    console.log('Grid: ' + grid[newPos.y - 1]);
-
                     console.log('Puedo mover rover');
                     return 1
                 } else {
