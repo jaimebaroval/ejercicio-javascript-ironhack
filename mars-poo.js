@@ -1,24 +1,24 @@
 // POO
 
-// let grid = [
-//     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-//     [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-//     [20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
-//     [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
-//     [40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
-//     [50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
-//     [60, 61, 62, 63, 64, 65, 66, 67, 68, 69],
-//     [70, 71, 72, 73, 74, 75, 76, 77, 78, 79],
-//     [80, 81, 82, 83, 84, 85, 86, 87, 88, 89],
-//     [90, 91, 92, 93, 94, 95, 96, 97, 98, 99],
-// ]
+let grid = [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    [20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+    [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+    [40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+    [50, 51, 52, 53, 54, 55, 56, 57, 58, 59],
+    [60, 61, 62, 63, 64, 65, 66, 67, 68, 69],
+    [70, 71, 72, 73, 74, 75, 76, 77, 78, 79],
+    [80, 81, 82, 83, 84, 85, 86, 87, 88, 89],
+    [90, 91, 92, 93, 94, 95, 96, 97, 98, 99],
+]
 
 let obstaculos = [22, 42]
 
-let commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f'];
+let commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f'];
 // let commandsArray = ['b', 'b', 'b', 'b', 'b', 'b', 'l', 'f'];
 
-let commandsArray2 = ['f', 'l', 'f', 'r', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'f'];;
+let commandsArray2 = ['f', 'l', 'f', 'r', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'f'];;
 
 
 function tableCreate() {
@@ -37,13 +37,26 @@ function tableCreate() {
         var row = document.createElement("tr");
         // row.setAttribute("id", j);
 
+
         for (var i = 0; i < 10; i++) {
+            let idNum = (j - 1).toString() + (i - 1);
             var cell = document.createElement("td");
             cell.setAttribute("class", "cell")
-            j == 0 ? cell.setAttribute("id", i) : cell.setAttribute("id", j.toString() + i)
-            var cellText = document.createTextNode(j.toString() + i);
+            if (j != 0 && i != 0) {
+                cell.setAttribute("id", parseFloat(idNum));
+            }
+            if (j == 0 || i == 0) {
+                // Pintar numeros en celdas
+                // Pintar Obstáculos
 
-            cell.appendChild(cellText);
+                //Pintar numeros
+                var cellText = j >= 1 ? document.createTextNode(j) : document.createTextNode(i)
+                cell.appendChild(cellText);
+            } else {
+                var cellText = document.createTextNode('0')
+                cell.appendChild(cellText);
+            }
+
             row.appendChild(cell);
         }
 
@@ -58,33 +71,16 @@ function tableCreate() {
     // tbl border attribute to 
     tbl.setAttribute("border", "1");
 
-    console.log(body);
+    // console.log(body);
 
 }
-
-
-// function crearTable() {
-//     let body = document.getElementsByTagName('body')[0]
-
-//     let tbl = document.createElement('table')
-//     let tblBody = document.createElement('tbody')
-//     let row = document.createElement('tr')
-//     let cell = document.createElement('td')
-
-//     row.appendChild(cell)
-//     tbl.appendChild(tblBody)
-//     body.appendChild(tbl)
-
-//     console.log(body);
-
-
-
-// }
 
 tableCreate();
 
 
 
+
+// Object roverObject()
 
 function roverObject(commands, startDirection, posX, posY) {
     let rover = {
@@ -94,8 +90,8 @@ function roverObject(commands, startDirection, posX, posY) {
     };
 
     let newPos = {
-        x: posX,
-        y: posY
+        x: posX - 1,
+        y: posY - 1
     };
 
     const positionLog = [grid[newPos.y][newPos.x]]
@@ -109,14 +105,24 @@ function roverObject(commands, startDirection, posX, posY) {
         positionLog.forEach(e => console.log(e))
     }
 
+
+
+
+
+    // MOVER POR TURNOS UTILIZANDO attribute.lenght
+
+
+
+
+
     function moverRover(command, roverDirection) {
 
         // Pintar Rover
-        // pintarRover();
+        pintarRover();
 
         // CREAR FUNCION DE MARCHA ALANTE Y FUNCION DE MARCHA ATRÁS
 
-        if (rover.direction == 'N') {
+        if (roverDirection == 'N') {
             if (command == 'f') {
                 if (analizarTerreno(command)) {
                     newPos.y--
@@ -157,7 +163,7 @@ function roverObject(commands, startDirection, posX, posY) {
             }
         }
 
-        if (rover.direction == 'S') {
+        if (roverDirection == 'S') {
             if (command == 'f') {
                 if (analizarTerreno(command)) {
                     newPos.y++
@@ -306,7 +312,7 @@ function roverObject(commands, startDirection, posX, posY) {
             }
         }
 
-        // pintarRover();
+        pintarRover();
 
     }
 
@@ -333,6 +339,8 @@ function roverObject(commands, startDirection, posX, posY) {
 
             if (direccionActual == 'N') {
                 if (grid[newPos.y - 1] && grid[newPos.y - 1].innerHTML != 'X') {
+                    console.log('Grid: ' + grid[newPos.y - 1]);
+
                     console.log('Puedo mover rover');
                     return 1
                 } else {
@@ -494,11 +502,11 @@ function roverObject(commands, startDirection, posX, posY) {
 console.log(`ROVER 1 =>
 
 `);
-var Rover1 = new roverObject(commandsArray, 'N', 1, 7)
+var Rover1 = new roverObject(commandsArray, 'N', 1, 4)
 
 console.log(`
 
 ROVER 2 =>
 
 `);
-var Rover2 = new roverObject(commandsArray2, 'S', 5, 0)
+var Rover2 = new roverObject(commandsArray2, 'N', 5, 6)
