@@ -13,12 +13,12 @@ const grid = [
     [90, 91, 92, 93, 94, 95, 96, 97, 98, 99],
 ]
 
-const obstaculos = [41, 11, 24, 92, 87, 84]
+const obstaculos = [74, 11, 24, 92, 87, 84, 61, 17, 43]
 
-const commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f'];
+const commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'l', 'f', 'r', 'f', 'f', 'l', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'r', 'f', 'l', 'f', 'f', 'f'];
 // let commandsArray = ['b', 'b', 'b', 'b', 'b', 'b', 'l', 'f'];
 
-const commandsArray2 = ['f', 'l', 'f', 'r', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'f'];
+const commandsArray2 = ['f', 'l', 'f', 'r', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f'];
 
 
 
@@ -41,7 +41,7 @@ function tableCreate() {
 
         for (var i = 0; i < 10; i++) {
 
-            let idNum = parseFloat((j - 1).toString() + (i - 1))
+            let idNum = parseFloat((j).toString() + (i))
             var cell = document.createElement("td");
             cell.setAttribute("class", "cell")
             if (j != 0 && i != 0) {
@@ -97,359 +97,89 @@ function roverObject(commands, startDirection, posX, posY) {
     };
 
     let newPos = {
-        x: posX - 1,
-        y: posY - 1
+        x: posX,
+        y: posY
     };
 
-    const positionLog = [grid[newPos.y][newPos.x]]
+    const positionLog = []
 
     function leerComandos() {
 
         for (i = 0; i < commands.length; i++) {
-            commands[i] == 'f' || commands == 'b' ? moverRover(commands[i], rover.direction) : girarRover(commands[i], rover.direction)
+            commands[i] == 'f' || commands[i] == 'b' ? moverRover(commands[i], rover.direction) : girarRover(commands[i], rover.direction)
         }
         console.log('positionLog: ');
         positionLog.forEach(e => console.log(e))
     }
 
-
-
-
-
-    // MOVER POR TURNOS UTILIZANDO attribute.lenght
-
-
-
+    // MOVER POR TURNOS UTILIZANDO attribute.lenght PARA cualquier cantidad de  ROVERS 
 
 
     function moverRover(command, roverDirection) {
 
-        // Pintar Rover
+        positionLog.push(grid[newPos.y][newPos.x])
+
         pintarRover();
 
-        // Devuelve si es OK Terreno Calda Siguiente => Ejecuta todo analizarTerreno() en console.log()
-        // console.log(analizarTerreno(command));
+        let analisisCelda = analizarTerreno(command, roverDirection)
 
+        if (analisisCelda) {
 
-        // CREAR FUNCION DE MARCHA ALANTE Y FUNCION DE MARCHA ATRÁS
+            console.log('Posición actual: ' + grid[newPos.y][newPos.x]);
 
-        if (roverDirection == 'N') {
+            //Avanzar
             if (command == 'f') {
-                if (analizarTerreno(command)) {
-                    newPos.y--
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    // Celda siguiente
-                    let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
-                    console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
-
-
-                    //ESTO DENTRO DE ANALIZAR TERRENO 
-
-                    if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
-                        console.log(`
-^^^^^^^^^^^^^^^^^^^
-     Obstaculo       
-^^^^^^^^^^^^^^^^^^^`);
-
-
-
-                        newPos.y++
-                    }
-
-                    //ESTO DENTRO DE ANALIZAR TERRENO 
-
-
-
-
-                    console.log('-----------------------------');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                }
+                avanzar(roverDirection)
             } else if (command == 'b') {
-                if (analizarTerreno(command)) {
-                    newPos.y++
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    // Celda siguiente
-                    let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
-                    console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
-                    if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
-                        console.log('^^^^^^^^^^^^^^^^^^^');
-                        console.log('Obstaculo');
-                        newPos.y--
-                    }
-                    console.log('-----------------------------');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                } else {
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    console.log('+++++++++++++++++++++++++++++');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                }
-            }
-        }
-
-        if (roverDirection == 'S') {
-            if (command == 'f') {
-                if (analizarTerreno(command)) {
-                    newPos.y++
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    // Celda siguiente
-                    let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
-                    console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
-                    if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
-                        console.log(`
-^^^^^^^^^^^^^^^^^^^
-     Obstaculo       
-^^^^^^^^^^^^^^^^^^^`);
-                        newPos.y--
-                    }
-                    console.log('-----------------------------');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                } else {
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    console.log('+++++++++++++++++++++++++++++');
-                    positionLog.push(grid[newPos.y][newPos.x])
-
-                }
+                retroceder(roverDirection)
             }
 
-            if (command == 'b') {
-                if (analizarTerreno(command)) {
-                    newPos.y--
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    // Celda siguiente
-                    let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
-                    console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
-                    if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
-                        console.log(`
-^^^^^^^^^^^^^^^^^^^
-     Obstaculo       
-^^^^^^^^^^^^^^^^^^^`);
-                        newPos.y++
-                    }
-                    console.log('-----------------------------');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                } else {
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    console.log('+++++++++++++++++++++++++++++');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                }
-            }
-        }
-
-        if (rover.direction == 'W') {
-            if (command == 'f') {
-                if (analizarTerreno(command)) {
-                    newPos.x--
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    // Celda siguiente
-                    let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
-                    console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
-                    if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
-                        console.log(`
-^^^^^^^^^^^^^^^^^^^
-     Obstaculo       
-^^^^^^^^^^^^^^^^^^^`);
-                        newPos.x++
-                    }
-                    console.log('-----------------------------');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                } else {
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    console.log('+++++++++++++++++++++++++++++');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                }
+            // Girar
+            if (command == 'l' || command == 'r') {
+                girarRover(command)
             }
 
-            if (command == 'b') {
-                if (analizarTerreno(command)) {
-                    newPos.x++
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    // Celda siguiente
-                    let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
-                    console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
-                    if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
-                        console.log(`
-^^^^^^^^^^^^^^^^^^^
-     Obstaculo       
-^^^^^^^^^^^^^^^^^^^`);
-                        newPos.x--
-                    }
-                    console.log('-----------------------------');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                } else {
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    console.log('+++++++++++++++++++++++++++++');
-                    positionLog.push(grid[newPos.y][newPos.x])
-
-                }
-            }
-
+            pintarRover();
 
         }
+    }
 
-        if (rover.direction == 'E') {
-            if (command == 'f') {
-                if (analizarTerreno(command)) {
-                    newPos.x++
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    // Celda siguiente
-                    let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
-                    console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
-                    if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
-                        console.log(`
-^^^^^^^^^^^^^^^^^^^
-     Obstaculo       
-^^^^^^^^^^^^^^^^^^^`);
-                        newPos.x--
-                    }
-                    console.log('-----------------------------');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                } else {
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    console.log('+++++++++++++++++++++++++++++');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                }
-            }
-
-            if (command == 'b') {
-                if (analizarTerreno(command)) {
-                    newPos.x--
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    // Celda siguiente
-                    let celdaSiguiente = document.getElementById(grid[newPos.y][newPos.x])
-                    console.log('Celda Siguiente: ' + celdaSiguiente.innerHTML);
-                    if (celdaSiguiente.innerHTML == 'X' || celdaSiguiente.innerHTML == 'R1' || celdaSiguiente.innerHTML == 'R2') {
-                        console.log(`
-^^^^^^^^^^^^^^^^^^^
-     Obstaculo       
-^^^^^^^^^^^^^^^^^^^`);
-                        newPos.x++
-                    }
-                    console.log('-----------------------------');
-                    positionLog.push(grid[newPos.y][newPos.x])
-                } else {
-                    console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
-                    console.log('+++++++++++++++++++++++++++++');
-                    positionLog.push(grid[newPos.y][newPos.x])
-
-                }
-            }
+    function avanzar(roverDirection) {
+        if (roverDirection == 'N' || roverDirection == 'S') {
+            roverDirection == 'N' ? newPos.y-- : newPos.y++
+            //Log()
+            roverDirection == 'N' ? console.log('AVANZAR NORTE') : console.log('AVANZAR SUR')
+            console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
+            console.log('-----------------------------');
+        } else if (roverDirection == 'E' || roverDirection == 'W') {
+            roverDirection == 'E' ? newPos.x++ : newPos.x--
+            //Log()
+            roverDirection == 'E' ? console.log('AVANZAR ESTE') : console.log('AVANZAR OESTE')
+            console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
+            console.log('-----------------------------');
         }
-
-        pintarRover();
 
     }
 
-
-
-    /* Analizar Terreno */
-
-    function analizarTerreno(direccion) {
-        let posicionActual = grid[newPos.y][newPos.x];
-        let direccionActual = rover.direction;
-        let celdaSiguiente = document.getElementById(posicionActual)
-
-        // if (celda == 'X') {
-        //     console.log('Obstaculo!!!');
-
-        //     return 0
-
-        // }
-
-        console.log('PosicionActual = ' + posicionActual);
-        console.log('Direccion Rover = ' + direccionActual);
-
-        if (direccion == 'f') {
-
-            if (direccionActual == 'N') {
-                if (grid[newPos.y - 1] && grid[newPos.y - 1].innerHTML != 'X') {
-                    console.log('Puedo mover rover');
-                    return 1
-                } else {
-                    console.log('NO puedo mover el rover / Fuera de ZONA');
-                    console.log('-----------------------------');
-                    return 0
-                }
-            }
-            if (direccionActual == 'S') {
-
-                if (grid[newPos.y + 1]) {
-                    console.log('Puedo mover rover');
-                    return 1
-                } else {
-                    console.log('NO puedo mover el rover / Fuera de ZONA');
-                    console.log('-----------------------------');
-                    return 0
-                }
-            }
-            if (direccionActual == 'E') {
-                if (grid[newPos.y][newPos.x + 1] && grid[newPos.y][newPos.x + 1] > 0) {
-                    console.log('Puedo mover rover');
-                    return 1
-                } else {
-                    console.log('NO puedo mover el rover / Fuera de ZONA');
-                    console.log('-----------------------------');
-                    return 0
-                }
-            }
-            if (direccionActual == 'W') {
-                if (grid[newPos.y][newPos.x - 1] && grid[newPos.y][newPos.x - 1] > 0) {
-                    console.log('Puedo mover rover');
-                    return 1
-                } else {
-                    console.log('NO puedo mover el rover / Fuera de ZONA');
-                    console.log('-----------------------------');
-                    return 0
-                }
-            }
-
-        } else if (direccion == 'b') {
-
-            if (direccionActual == 'N') {
-                if (grid[newPos.y + 1] && grid[newPos.y + 1][newPos.x] > 0) {
-                    console.log('Puedo mover rover');
-                    return 1
-                } else {
-                    console.log('NO puedo mover el rover / Fuera de ZONA');
-                    console.log('-----------------------------');
-                    return 0
-                }
-            }
-            if (direccionActual == 'S') {
-                if (grid[newPos.y - 1] && grid[newPos.y - 1][newPos.x] > 0) {
-                    console.log('Puedo mover rover');
-                    return 1
-                } else {
-                    console.log('NO puedo mover el rover / Fuera de ZONA');
-                    console.log('-----------------------------');
-                    return 0
-                }
-            }
-            if (direccionActual == 'E') {
-                if (grid[newPos.y][newPos.x - 1] && grid[newPos.y][newPos.x - 1] > 0) {
-                    console.log('Puedo mover rover');
-                    return 1
-                } else {
-                    console.log('NO puedo mover el rover / Fuera de ZONA');
-                    console.log('-----------------------------');
-                    return 0
-                }
-            }
-            if (direccionActual == 'W') {
-                if (grid[newPos.y][newPos.x + 1] && grid[newPos.y][newPos.x + 1] > 0) {
-                    console.log('Puedo mover rover');
-                    return 1
-                } else {
-                    console.log('NO puedo mover el rover / Fuera de ZONA');
-                    console.log('-----------------------------');
-                    return 0
-                }
-            }
+    function retroceder(roverDirection) {
+        if (roverDirection == 'N' || roverDirection == 'S') {
+            roverDirection == 'N' ? newPos.y++ : newPos.y--
+            //Log()
+            roverDirection == 'N' ? console.log('RETROCEDER NORTE') : console.log('RETROCEDER SUR')
+            console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
+            console.log('-----------------------------');
+        } else if (roverDirection == 'E' || roverDirection == 'W') {
+            roverDirection == 'E' ? newPos.x-- : newPos.x++
+            //Log()
+            roverDirection == 'E' ? console.log('RETROCEDER ESTE') : console.log('RETROCEDER OESTE')
+            console.log('Nueva posición: ' + grid[newPos.y][newPos.x]);
+            console.log('-----------------------------');
         }
     }
 
     function girarRover(commands, roverDirection) {
 
-        let direccionActual = rover.direction;
+        let direccionActual = roverDirection;
 
         if (commands == 'r') {
             if (direccionActual == 'N') {
@@ -465,6 +195,7 @@ function roverObject(commands, startDirection, posX, posY) {
             console.log('·····························');
 
 
+
         } else if (commands == 'l') {
             if (direccionActual == 'N') {
                 rover.direction = 'W'
@@ -478,9 +209,58 @@ function roverObject(commands, startDirection, posX, posY) {
 
             console.log('Giro Izquierda');
             console.log('·····························');
+
         }
 
     }
+
+    function analizarTerreno(command, roverDirection) {
+
+        let nuevaPosicion
+        let celdaSiguiente
+
+        if (command == 'f') {
+
+            nuevaPosicion =
+                roverDirection == 'N' ? grid[newPos.y - 1][newPos.x] :
+                    roverDirection == 'S' ? grid[newPos.y + 1][newPos.x] :
+                        roverDirection == 'E' ? grid[newPos.y][newPos.x + 1] :
+                            roverDirection == 'W' ? grid[newPos.y][newPos.x - 1] :
+                                null;
+
+        } else if (command == 'b') {
+
+            nuevaPosicion =
+                roverDirection == 'N' ? grid[newPos.y + 1][newPos.x] :
+                    roverDirection == 'S' ? grid[newPos.y - 1][newPos.x] :
+                        roverDirection == 'E' ? grid[newPos.y][newPos.x - 1] :
+                            roverDirection == 'W' ? grid[newPos.y][newPos.x + 1] :
+                                null;
+
+        }
+
+        celdaSiguiente = document.getElementById(nuevaPosicion)
+
+        if (celdaSiguiente) {
+            if (celdaSiguiente.innerHTML != 'X' && celdaSiguiente.innerHTML != 'R1' && celdaSiguiente.innerHTML != 'R2') {
+                celdaSiguiente ? console.log('Celda Siguiente: ' + 'OK: ' + celdaSiguiente.innerHTML) : console.log('Celda Fuera de CUADRO');
+                console.log('Puedo mover rover');
+                return 1
+            } else {
+                console.log(celdaSiguiente.innerHTML);
+                celdaSiguiente.innerHTML == 'X' ? console.log('Obstaculo') : console.log('ROVER DELANTE');
+                console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+                return 0
+            }
+        } else {
+            console.log('NO puedo mover el rover / Fuera de ZONA');
+            console.log('-----------------------------');
+            return 0
+        }
+
+
+    }
+
 
     function pintarRover() {
         let posRover = grid[newPos.y][newPos.x]
@@ -499,35 +279,19 @@ function roverObject(commands, startDirection, posX, posY) {
 
     return leerComandos(commands)
 
-
-
-
 }
-
-// function pintarTablero(table, idx) {
-//     let trTable = document.getElementById('tr-table')
-//     for (e = 0; e < table.length; e++) {
-//         for (i = 0; i < table[idx].length; i++) {
-//             trTable.innerHTML += `<td id="${table[e][i]}"></td>`
-//         }
-//     }
-// }
-
-
-
-// let r = new roverObject(commandsArray);
-
 
 // Instancias
 
 console.log(`ROVER 1 =>
 
 `);
-var Rover1 = new roverObject(commandsArray, 'N', 1, 4)
+var Rover1 = new roverObject(commandsArray, 'N', 9, 6)
 
 console.log(`
 
 ROVER 2 =>
 
 `);
-var Rover2 = new roverObject(commandsArray2, 'N', 5, 6)
+var Rover2 = new roverObject(commandsArray2, 'N', 9, 9) // Rover 2 Cae sobre Rover 1
+
