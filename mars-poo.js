@@ -15,7 +15,7 @@ const grid = [
 
 const obstaculos = [74, 11, 24, 92, 89, 84, 61, 17, 43]
 
-const commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'r', 'f', 'l', 'f', 'f', 'f'];
+const commandsArray = ['f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'r', 'f', 'l', 'f', 'f', 'f'];
 // let commandsArray = ['b', 'b', 'b', 'b', 'b', 'b', 'l', 'f'];
 
 const commandsArray2 = ['f', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'l', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'f', 'f', 'f', 'r', 'f', 'f', 'l', 'f', 'f'];
@@ -256,12 +256,9 @@ function roverObject(commands, startDirection, posX, posY) {
         }
 
 
-
-
-
-
-
+        // Fijar celdaSiguiente
         celdaSiguiente = document.getElementById(nuevaPosicion)
+
 
         if (celdaSiguiente) {
             if (celdaSiguiente.innerHTML != 'X' && celdaSiguiente.innerHTML != 'R1' && celdaSiguiente.innerHTML != 'R2') {
@@ -310,7 +307,7 @@ function roverObject(commands, startDirection, posX, posY) {
 console.log(`ROVER 1 =>
 
 `);
-var Rover1 = new roverObject(commandsArray, 'E', 6, 5)
+var Rover1 = new roverObject(commandsArray, 'E', 8, 2)
 
 console.log(`
 
@@ -323,30 +320,13 @@ var Rover2 = new roverObject(commandsArray2, 'W', 6, 4) // Rover 2 Cae sobre Rov
 
 function avancePorTurnos() {
 
-    console.log('Array 1: ');
-
-    // commandsArray.forEach(k => {
-    //     commandsArray2.forEach(i => {
-    //         console.log(i, k)
-    //     });
-    // };
+    console.log('CommandTurn: ');
 
     commandsArray.forEach((num1, index) => {
         const num2 = commandsArray2[index];
         commandsTurns.push(num1)
         commandsTurns.push(num2)
     });
-
-    // commandsArray.forEach(function (e, idx) {
-    //         console.log('[' + idx + ']' + commandsArray[idx] + ' ')
-
-    // })
-
-
-
-    // commandsArray2.forEach(function (i) {
-    //     commandsTurns.push(i)
-    // })
 
     console.log(commandsTurns);
 
